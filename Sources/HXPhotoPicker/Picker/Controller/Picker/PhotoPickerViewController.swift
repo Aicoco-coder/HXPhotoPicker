@@ -21,7 +21,7 @@ public class PhotoPickerViewController: PhotoBaseViewController {
     
     var assetCollection: PhotoAssetCollection!
     var titleView: PhotoPickerNavigationTitle!
-    var listView: PhotoPickerList!
+    public var listView: PhotoPickerList!
     var albumBackgroudView: UIView!
     var albumView: PhotoAlbumList!
     var isShowToolbar: Bool = false
