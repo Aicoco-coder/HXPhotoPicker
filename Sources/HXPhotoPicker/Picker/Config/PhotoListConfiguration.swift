@@ -192,6 +192,12 @@ public struct PhotoListConfiguration {
     ///  PHAsset.localIdentifier / PhotoAsset.localAssetIdentifier
     public var selectedAssetIdentifier: String?
     
+    /// 打开时显示最近一张图片
+    public var previewLatestImageOnOpen: Bool = false
+    
+    /// 底部提示文案，为空则不显示
+    public var bottomTips: String?
+    
     public init() {
         #if HXPICKER_ENABLE_CAMERA && !targetEnvironment(macCatalyst)
         if #available(iOS 14.0, *), ProcessInfo.processInfo.isiOSAppOnMac {

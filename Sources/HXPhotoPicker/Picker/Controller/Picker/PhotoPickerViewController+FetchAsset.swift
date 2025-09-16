@@ -75,6 +75,8 @@ extension PhotoPickerViewController {
             }else if let presentedViewController = self.presentedViewController as? PhotoPickerController,
                      let previewViewController = presentedViewController.previewViewController {
                 previewViewController.updateAsstes(for: result.assets)
+            } else if self.config.previewLatestImageOnOpen {
+                pushPreviewViewController(previewAssets: self.listView.assets, currentPreviewIndex: self.listView.assets.count-1, animated: false)
             }
         }
     }

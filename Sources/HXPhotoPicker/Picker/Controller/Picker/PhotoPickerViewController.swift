@@ -21,6 +21,7 @@ public class PhotoPickerViewController: PhotoBaseViewController {
     
     var assetCollection: PhotoAssetCollection!
     var titleView: PhotoPickerNavigationTitle!
+    var bottomTipsLabel: UILabel?
     public var listView: PhotoPickerList!
     var albumBackgroudView: UIView!
     var albumView: PhotoAlbumList!
@@ -143,8 +144,8 @@ public class PhotoPickerViewController: PhotoBaseViewController {
             }
         }
         if pickerConfig.isMultipleSelect {
-            let bottomInset: CGFloat
-            let bottomIndicatorInset: CGFloat
+            var bottomInset: CGFloat
+            var bottomIndicatorInset: CGFloat
             if isShowToolbar {
                 let viewHeight = photoToolbar.viewHeight
                 photoToolbar.frame = .init(x: 0, y: view.height - viewHeight, width: view.width, height: viewHeight)
@@ -153,6 +154,15 @@ public class PhotoPickerViewController: PhotoBaseViewController {
             }else {
                 bottomInset = UIDevice.bottomMargin
                 bottomIndicatorInset = UIDevice.bottomMargin
+            }
+            if let label = bottomTipsLabel {
+                var y = view.height - UIDevice.bottomMargin - label.height
+                if isShowToolbar {
+                    y = photoToolbar.frame.minY - label.height
+                }
+                label.frame = .init(x: 0, y: y, width: view.width, height: label.height)
+                bottomInset += label.height
+                bottomIndicatorInset += label.height
             }
             listView.contentInset = UIEdgeInsets(
                 top: collectionTop,
@@ -171,6 +181,14 @@ public class PhotoPickerViewController: PhotoBaseViewController {
             if isShowToolbar {
                 promptHeight = photoToolbar.viewHeight
                 photoToolbar.frame = .init(x: 0, y: view.height - promptHeight, width: view.width, height: promptHeight)
+            }
+            if let label = bottomTipsLabel {
+                var y = view.height - UIDevice.bottomMargin - label.height
+                if isShowToolbar {
+                    y = photoToolbar.frame.minY - label.height
+                }
+                label.frame = .init(x: 0, y: y, width: view.width, height: label.height)
+                promptHeight += label.height
             }
             listView.contentInset = UIEdgeInsets(
                 top: collectionTop,
@@ -236,6 +254,23 @@ extension PhotoPickerViewController {
         initAlbumView()
         initTitleView()
         updateTitle()
+        if let bottomTips = config.bottomTips {
+            lazy var lable: UILabel = {
+                let label = UILabel()
+                label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+                label.textAlignment = .center
+                label.textColor = UIColor.init(white: 1, alpha: 0.85)
+                label.backgroundColor = UIColor(red: 0.05, green: 0.05, blue: 0.06, alpha: 0.85)
+                label.numberOfLines = 0
+                return label
+            }()
+            let width: CGFloat = view.width-16*2
+            let height: CGFloat = 16//bottomTips.height(ofFont: lable.font, maxWidth: width)
+            lable.size = CGSize.init(width: width, height: height + 16)
+            lable.text = bottomTips
+            view.addSubview(lable)
+            bottomTipsLabel = lable
+        }
     }
     
     func initTitleView() {
