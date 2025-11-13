@@ -536,19 +536,19 @@ public class PhotoToolBarView: UIToolbar, PhotoToolBar {
 
 extension PhotoToolBarView: PhotoPreviewListViewDataSource {
     func previewListView(_ previewListView: PhotoPreviewListView, thumbnailOnPage page: Int) -> PhotoAsset? {
-        if !isShowPreviewList || previewAssets.isEmpty { return nil }
+        if !isShowPreviewList || (page >= previewAssets.count || page < 0) { return nil }
         return previewAssets[page]
     }
     
     func previewListView(_ previewListView: PhotoPreviewListView, thumbnailWidthToHeightOnPage page: Int) -> CGFloat? {
-        if !isShowPreviewList || previewAssets.isEmpty { return nil }
+        if !isShowPreviewList || (page >= previewAssets.count || page < 0) { return nil }
         let asset = previewAssets[page]
         guard asset.imageSize.height > 0 else { return nil }
         return asset.imageSize.width / asset.imageSize.height
     }
     
     func previewListView(_ previewListView: PhotoPreviewListView, pageDidChange page: Int, reason: PhotoPreviewListView.PageChangeReason) {
-        if previewAssets.isEmpty {
+        if (page >= previewAssets.count || page < 0) {
             return
         }
         switch reason {
